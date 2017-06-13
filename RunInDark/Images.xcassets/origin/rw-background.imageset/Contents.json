@@ -2,8 +2,8 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "rwdevcon-bg.png"
+      "filename" : "rwdevcon-bg.png",
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",

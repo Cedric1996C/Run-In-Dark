@@ -72,13 +72,6 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
         }
     }
     
-    // Determines if the player's position should be updated
-    fileprivate func playerMove(currentPosition: CGPoint, touchPosition: CGPoint) -> Bool {
-        return abs(currentPosition.x - touchPosition.x) > player!.frame.width / 2 ||
-            abs(currentPosition.y - touchPosition.y) > player!.frame.height/2
-    }
-
-    
     //MARK - update
     override func didSimulatePhysics(){
         if let _ = player{
@@ -86,55 +79,11 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
             updateZombies()
         }
     }
-    
-    // Updates the player's position by moving towards the last touch made
-    func updatePlayer() {
-        if let touch = lastTouch {
-            let currentPosition = player!.position
-            if playerMove(currentPosition: currentPosition, touchPosition: touch) {
-                
-                let angle = atan2(currentPosition.y - touch.y, currentPosition.x - touch.x) + CGFloat(M_PI)
-                let rotateAction = SKAction.rotate(toAngle: angle + CGFloat(M_PI*0.5), duration: 0)
-                
-                //player rotate
-                player!.run(rotateAction)
-                
-                let velocotyX = playerSpeed * cos(angle)
-                let velocityY = playerSpeed * sin(angle)
-                
-                let playerVelocity = CGVector(dx: velocotyX, dy: velocityY)
-                player!.physicsBody!.velocity = playerVelocity;
-                updateCamera()
-            } else {
-                // player keep static
-                player!.physicsBody!.isResting = true
-            }
-        }
-    }
-    
+        
     //Update the camera
     func updateCamera(){
         if let camera = camera {
             camera.position = CGPoint(x: player!.position.x, y: player!.position.y)
-        }
-    }
-    
-    // Updates the position of all zombies by moving towards the player
-    func updateZombies() {
-        let target = player!.position
-        
-        for zombie in zombies {
-            let current = zombie.position
-            
-            let angle = atan2(current.y - target.y, current.x - target.x) + CGFloat(M_PI)
-            let rotateAction = SKAction.rotate(toAngle: angle + CGFloat(M_PI*0.5), duration: 0.0)
-            zombie.run(rotateAction)
-            
-            let velocotyX = zombieSpeed * cos(angle)
-            let velocityY = zombieSpeed * sin(angle)
-            
-            let zombieVelocity = CGVector(dx: velocotyX, dy: velocityY)
-            zombie.physicsBody!.velocity = zombieVelocity;
         }
     }
 

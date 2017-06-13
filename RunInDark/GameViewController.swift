@@ -33,30 +33,42 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //import GameScene
-        if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
-            // Configure the view.
-            let skView = self.view as! SKView
-            skView.showsFPS = true
-            skView.showsNodeCount = true
+        let sceneNode = InitialScene(size: view.frame.size)
+        
+        if let view = self.view as! SKView? {
+            view.presentScene(sceneNode)
+            view.ignoresSiblingOrder = true
             
-            /* Sprite Kit applies additional optimizations to improve rendering performance */
-            skView.ignoresSiblingOrder = true
-            
-            /* Set the scale mode to scale to fit the window */
-            scene.scaleMode = .aspectFill
-            
-            skView.presentScene(scene)
+            //            view.showsPhysics = true
+            //            view.showsFPS = true
+            //            view.showsNodeCount = true
         }
+
+        
+//        //import GameScene
+//        if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
+//            // Configure the view.
+//            let skView = self.view as! SKView
+//            skView.showsFPS = true
+//            skView.showsNodeCount = true
+//            
+//            /* Sprite Kit applies additional optimizations to improve rendering performance */
+//            skView.ignoresSiblingOrder = true
+//            
+//            /* Set the scale mode to scale to fit the window */
+//            scene.scaleMode = .aspectFill
+//            
+//            skView.presentScene(scene)
+//        }
     }
     
-    override var shouldAutorotate : Bool {
+    override var shouldAutorotate: Bool {
         return true
     }
     
     override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         if UIDevice.current.userInterfaceIdiom == .phone {
-            return UIInterfaceOrientationMask.allButUpsideDown
+            return UIInterfaceOrientationMask.landscapeRight
         } else {
             return UIInterfaceOrientationMask.all
         }
