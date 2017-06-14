@@ -28,23 +28,24 @@ class InitialScene: SKScene {
     override func sceneDidLoad() {
         self.backgroundColor = SKColor(red: 0, green:0, blue:0, alpha: 1)
 //        self.backgroundColor = SKColor(red:160,green:160,blue:160,alpha:1)
-        
+//        print(size.width)
+//        print(size.height)
         //Setup start button
         startBtn = SKSpriteNode(texture: startBtnTexture)
-        startBtn.size = CGSize(width:35,height:100)
+        startBtn.size = CGSize(width:40,height:40)
         startBtn.position = CGPoint(x: size.width / 2-50, y: size.height / 2 - 100)
         addChild(startBtn)
         
         //Setup options button
         optionBtn = SKSpriteNode(texture: optionBtnTexture)
-        optionBtn.size = CGSize(width:35,height:100)
+        optionBtn.size = CGSize(width:40,height:40)
         optionBtn.position = CGPoint(x: size.width / 2+50, y: size.height / 2 - 100)
         addChild(optionBtn)
 
         
         //Setup logo
         logoSprite = SKSpriteNode(texture: titleTexture)
-        logoSprite.size = CGSize(width:300,height:200)
+        logoSprite.size = CGSize(width:450,height:100)
         logoSprite.position = CGPoint(x: size.width / 2, y: size.height / 2 + 100)
         addChild(logoSprite)
     }
@@ -117,21 +118,20 @@ class InitialScene: SKScene {
     
     func handlestartBtnClick() {
         let transition = SKTransition.reveal(with: .down, duration: 0.75)
-//        let gameScene = GameScene(size:size)
-//        gameScene.scaleMode = scaleMode
-//        view?.presentScene(gameScene, transition: transition)
-        //import GameScene
+
+        
+        /// transitate to level_1
         if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
             // Configure the view.
             let skView = self.view!
-            skView.showsFPS = true
-            skView.showsNodeCount = true
-            
+//            skView.showsFPS = true
+//            skView.showsNodeCount = true
+//            
             /* Sprite Kit applies additional optimizations to improve rendering performance */
             skView.ignoresSiblingOrder = true
             
             /* Set the scale mode to scale to fit the window */
-            scene.scaleMode = .aspectFill        
+            scene.scaleMode = .aspectFill
             skView.presentScene(scene, transition: transition)
         }
 

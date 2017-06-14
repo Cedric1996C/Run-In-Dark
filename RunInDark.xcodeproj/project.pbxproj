@@ -11,6 +11,7 @@
 		0638D9C51EEFC38600D74F4C /* ZombieSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0638D9C41EEFC38600D74F4C /* ZombieSprite.swift */; };
 		0638D9C91EEFDD3700D74F4C /* InitialScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0638D9C81EEFDD3700D74F4C /* InitialScene.swift */; };
 		0638D9CB1EEFFFBB00D74F4C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0638D9CA1EEFFFBB00D74F4C /* Images.xcassets */; };
+		0638D9CD1EF0CE5800D74F4C /* GameSceneHudNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0638D9CC1EF0CE5800D74F4C /* GameSceneHudNode.swift */; };
 		06791BD51EE4162400F00FC8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06791BD41EE4162400F00FC8 /* AppDelegate.swift */; };
 		06791BD71EE4162400F00FC8 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 06791BD61EE4162400F00FC8 /* GameScene.sks */; };
 		06791BD91EE4162400F00FC8 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 06791BD81EE4162400F00FC8 /* Actions.sks */; };
@@ -29,6 +30,7 @@
 		0638D9C41EEFC38600D74F4C /* ZombieSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZombieSprite.swift; sourceTree = "<group>"; };
 		0638D9C81EEFDD3700D74F4C /* InitialScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialScene.swift; sourceTree = "<group>"; };
 		0638D9CA1EEFFFBB00D74F4C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		0638D9CC1EF0CE5800D74F4C /* GameSceneHudNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameSceneHudNode.swift; sourceTree = "<group>"; };
 		06791BD11EE4162400F00FC8 /* RunInDark.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RunInDark.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		06791BD41EE4162400F00FC8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		06791BD61EE4162400F00FC8 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -64,6 +66,14 @@
 			name = Sprites;
 			sourceTree = "<group>";
 		};
+		0638D9CE1EF0CE6000D74F4C /* SKNodes */ = {
+			isa = PBXGroup;
+			children = (
+				0638D9CC1EF0CE5800D74F4C /* GameSceneHudNode.swift */,
+			);
+			name = SKNodes;
+			sourceTree = "<group>";
+		};
 		067258B11EEBD545005ACA3F /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
@@ -74,7 +84,7 @@
 			name = Scenes;
 			sourceTree = "<group>";
 		};
-		067258B21EEBD553005ACA3F /* SKNodes */ = {
+		067258B21EEBD553005ACA3F /* SKScenes */ = {
 			isa = PBXGroup;
 			children = (
 				06791BD61EE4162400F00FC8 /* GameScene.sks */,
@@ -82,7 +92,7 @@
 				06791BF31EE45E3100F00FC8 /* Wall.sks */,
 				06791BD81EE4162400F00FC8 /* Actions.sks */,
 			);
-			name = SKNodes;
+			name = SKScenes;
 			sourceTree = "<group>";
 		};
 		06791BC81EE4162400F00FC8 = {
@@ -104,8 +114,9 @@
 		06791BD31EE4162400F00FC8 /* RunInDark */ = {
 			isa = PBXGroup;
 			children = (
+				0638D9CE1EF0CE6000D74F4C /* SKNodes */,
 				0638D9C31EEFC23400D74F4C /* Sprites */,
-				067258B21EEBD553005ACA3F /* SKNodes */,
+				067258B21EEBD553005ACA3F /* SKScenes */,
 				067258B11EEBD545005ACA3F /* Scenes */,
 				06791BD41EE4162400F00FC8 /* AppDelegate.swift */,
 				06791BDC1EE4162400F00FC8 /* GameViewController.swift */,
@@ -202,6 +213,7 @@
 				06791BDD1EE4162400F00FC8 /* GameViewController.swift in Sources */,
 				0638D9C91EEFDD3700D74F4C /* InitialScene.swift in Sources */,
 				06791BD51EE4162400F00FC8 /* AppDelegate.swift in Sources */,
+				0638D9CD1EF0CE5800D74F4C /* GameSceneHudNode.swift in Sources */,
 				0638D9C21EEFC1A500D74F4C /* PlayerSprite.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -329,7 +341,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 9757EZX85T;
 				INFOPLIST_FILE = RunInDark/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = nju.edu.cn.RunInDark;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -343,7 +355,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 9757EZX85T;
 				INFOPLIST_FILE = RunInDark/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = nju.edu.cn.RunInDark;
 				PRODUCT_NAME = "$(TARGET_NAME)";

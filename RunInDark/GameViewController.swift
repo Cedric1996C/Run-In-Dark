@@ -33,33 +33,19 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let sceneNode = InitialScene(size: view.frame.size)
+        let size = CGSize(width:667.0,height:375.0)
+//        let sceneNode = InitialScene(size: view.frame.size)
+        let sceneNode = InitialScene(size: size)
+        sceneNode.scaleMode = .aspectFill
         
         if let view = self.view as! SKView? {
             view.presentScene(sceneNode)
-            view.ignoresSiblingOrder = true
-            
+            view.ignoresSiblingOrder = true            
             //            view.showsPhysics = true
             //            view.showsFPS = true
             //            view.showsNodeCount = true
         }
 
-        
-//        //import GameScene
-//        if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
-//            // Configure the view.
-//            let skView = self.view as! SKView
-//            skView.showsFPS = true
-//            skView.showsNodeCount = true
-//            
-//            /* Sprite Kit applies additional optimizations to improve rendering performance */
-//            skView.ignoresSiblingOrder = true
-//            
-//            /* Set the scale mode to scale to fit the window */
-//            scene.scaleMode = .aspectFill
-//            
-//            skView.presentScene(scene)
-//        }
     }
     
     override var shouldAutorotate: Bool {

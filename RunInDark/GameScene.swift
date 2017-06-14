@@ -22,6 +22,31 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
     
     var lastTouch: CGPoint? = nil
     
+    private let hud = GameSceneHudNode()
+    private let screenSize = UIScreen.main.bounds
+    
+
+    override func sceneDidLoad() {
+        camera?.scene?.anchorPoint = CGPoint(x:0.5,y:0.5)
+        hud.setup(size: screenSize.size)
+        addChild(hud)
+        
+        hud.returnBtnAction = {
+            let transition = SKTransition.reveal(with: .left, duration: 0.75)
+            let newSize = CGSize(width:self.screenSize.width,height:self.screenSize.height)
+            let initialScene = InitialScene(size:newSize)
+            initialScene.scaleMode = .aspectFit
+            self.view?.presentScene(initialScene, transition: transition)
+            self.hud.returnBtnAction = nil
+        }
+        
+        hud.pauseBtnAction = {
+            self.isPaused = true
+            self.hud.createContinueBtn()
+        }
+
+    }
+    
     override func didMove(to view: SKView) {
         // Setup physics world's contact delegate
         physicsWorld.contactDelegate = self 
@@ -54,15 +79,37 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
     
     //MARK: Touch Event
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        touchEvents(touches)
+        let touchPoint = touches.first?.location(in: UIScreen.main.focusedView)
+
+        if let point = touchPoint {
+            hud.touchBeganAtPoint(point: point)
+            if !hud.pauseBtnPressed && !hud.returnBtnPressed {
+                 touchEvents(touches)
+            }
+        }
+//        touchEvents(touches)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        touchEvents(touches)
+        let touchPoint = touches.first?.location(in: UIScreen.main.focusedView)
+        
+        if let point = touchPoint {
+            hud.touchMovedToPoint(point: point)
+            if !hud.pauseBtnPressed && !hud.returnBtnPressed {
+                touchEvents(touches)
+            }
+        }
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        touchEvents(touches)
+        let touchPoint = touches.first?.location(in:  UIScreen.main.focusedView)
+        
+        if let point = touchPoint {
+            hud.touchEndedAtPoint(point: point)
+            if !hud.pauseBtnPressed && !hud.returnBtnPressed {
+                touchEvents(touches)
+            }
+        }
     }
     
     fileprivate func touchEvents(_ touches: Set<UITouch>){
@@ -85,6 +132,8 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
         if let camera = camera {
             camera.position = CGPoint(x: player!.position.x, y: player!.position.y)
         }
+        hud.position = CGPoint(x: player!.position.x, y: player!.position.y)
+        
     }
 
     // MARK: - SKPhysicsContactDelegate
