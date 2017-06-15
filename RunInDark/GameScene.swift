@@ -44,6 +44,11 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
             self.isPaused = true
             self.hud.createContinueBtn()
         }
+        
+        hud.continueBtnAction = {
+            self.isPaused = false
+           self.hud.dissmissContinueBtn()
+        }
 
     }
     
@@ -95,7 +100,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
         
         if let point = touchPoint {
             hud.touchMovedToPoint(point: point)
-            if !hud.pauseBtnPressed && !hud.returnBtnPressed {
+            if !hud.pauseBtnPressed && !hud.returnBtnPressed && !hud.continueBtnPressed {
                 touchEvents(touches)
             }
         }

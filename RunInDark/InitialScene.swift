@@ -13,10 +13,11 @@ class InitialScene: SKScene {
     
     let startBtnTexture = SKTexture(imageNamed: "start01")
     let optionBtnTexture = SKTexture(imageNamed: "setting01")
+    let developerBtnTexture = SKTexture(imageNamed: "developer01")
     let startBtnPressedTexture = SKTexture(imageNamed: "start02")
     let optionBtnPressedTexture = SKTexture(imageNamed: "setting02")
+    let developerBtnPressedTexture = SKTexture(imageNamed: "developer02")
     let titleTexture = SKTexture(imageNamed: "title01")
-
 
     var logoSprite: SKSpriteNode! = nil
     var optionBtn : SKSpriteNode! = nil
@@ -33,15 +34,20 @@ class InitialScene: SKScene {
         //Setup start button
         startBtn = SKSpriteNode(texture: startBtnTexture)
         startBtn.size = CGSize(width:40,height:40)
-        startBtn.position = CGPoint(x: size.width / 2-50, y: size.height / 2 - 100)
+        startBtn.position = CGPoint(x: size.width / 2-50, y: size.height / 2 - 90)
         addChild(startBtn)
         
         //Setup options button
         optionBtn = SKSpriteNode(texture: optionBtnTexture)
         optionBtn.size = CGSize(width:40,height:40)
-        optionBtn.position = CGPoint(x: size.width / 2+50, y: size.height / 2 - 100)
+        optionBtn.position = CGPoint(x: size.width / 2+50, y: size.height / 2 - 90)
         addChild(optionBtn)
 
+        //Setup developer info button
+        developerBtn = SKSpriteNode(texture: developerBtnTexture)
+        developerBtn.size = CGSize(width:30,height:30)
+        developerBtn.position = CGPoint(x: size.width - 50 ,y: 50)
+        addChild(developerBtn)
         
         //Setup logo
         logoSprite = SKSpriteNode(texture: titleTexture)
@@ -63,6 +69,9 @@ class InitialScene: SKScene {
             } else if optionBtn.contains(touch.location(in: self)) {
                 selectedBtn = optionBtn
                 handleoptionBtnHover(isHovering: true)
+            } else if developerBtn.contains(touch.location(in: self)) {
+                selectedBtn = developerBtn
+                handledevelopBtnHover(isHovering: true)
             }
         }
     }
@@ -74,7 +83,8 @@ class InitialScene: SKScene {
                 handlestartBtnHover(isHovering: (startBtn.contains(touch.location(in: self))))
             } else if selectedBtn == optionBtn {
                 handleoptionBtnHover(isHovering: (optionBtn.contains(touch.location(in: self))))
-            }
+            } else if selectedBtn == developerBtn {
+               handledevelopBtnHover(isHovering: (developerBtn.contains(touch.location(in: self))))            }
         }
     }
     
@@ -93,6 +103,12 @@ class InitialScene: SKScene {
                 
                 if (optionBtn.contains(touch.location(in: self))) {
                     handleoptionBtnClick()
+                }
+            } else if selectedBtn == developerBtn {
+                handledevelopBtnHover(isHovering: false)
+                
+                if (developerBtn.contains(touch.location(in: self))) {
+                    handledevelopBtnClick()
                 }
             }
         }
@@ -116,6 +132,15 @@ class InitialScene: SKScene {
         }
     }
     
+    func handledevelopBtnHover (isHovering : Bool) {
+        if isHovering {
+            developerBtn.texture = developerBtnPressedTexture
+        } else {
+            developerBtn.texture = developerBtnTexture
+        }
+
+    }
+    
     func handlestartBtnClick() {
         let transition = SKTransition.reveal(with: .down, duration: 0.75)
 
@@ -135,6 +160,20 @@ class InitialScene: SKScene {
             skView.presentScene(scene, transition: transition)
         }
 
+    }
+    
+    func handledevelopBtnClick() {
+        let urlString = "https://github.com/NJUcong"
+        if let url = URL(string: urlString) {
+            //根据iOS系统版本，分别处理
+            if #available(iOS 10, *) {
+                UIApplication.shared.open(url, options: [:],completionHandler: {
+                                            (success) in
+                })
+            } else {
+                UIApplication.shared.openURL(url)
+            }
+        }
     }
     
     func handleoptionBtnClick() {

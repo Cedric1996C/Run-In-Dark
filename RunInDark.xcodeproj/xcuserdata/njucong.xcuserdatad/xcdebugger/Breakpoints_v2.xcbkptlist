@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RunInDark/GameScene.swift"
-            timestampString = "519139758.884923"
+            timestampString = "519179518.426381"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "115"
-            endingLineNumber = "115"
+            startingLineNumber = "120"
+            endingLineNumber = "120"
             landmarkName = "touchEvents(_:)"
             landmarkType = "7">
          </BreakpointContent>

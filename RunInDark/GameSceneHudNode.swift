@@ -22,13 +22,15 @@ class GameSceneHudNode: SKNode {
     private let returnBtnTexture = SKTexture(imageNamed: "return01")
     private let returnBtnPressedTexture = SKTexture(imageNamed:"return02")
     
+    private(set) var continueBtnPressed = false
     private var continueBtn: SKSpriteNode!
-    private let continueBtnTexture = SKTexture(imageNamed:"pause01")
-    private let continueBtnPressedTexture = SKTexture(imageNamed: "pause02")
+    private let continueBtnTexture = SKTexture(imageNamed:"continue01")
+    private let continueBtnPressedTexture = SKTexture(imageNamed: "continue02")
 
     
     var pauseBtnAction: (() -> ())?
     var returnBtnAction: (() -> ())?
+    var continueBtnAction: (() -> ())?
     
     var selectedBtn: SKSpriteNode?
     
@@ -59,16 +61,24 @@ class GameSceneHudNode: SKNode {
         let relativePoint = CGPoint(x:-(point.y - screenSize.height/2), y:-(point.x - screenSize.width/2))
         let containsPause = pauseBtn.contains(relativePoint)
         let containsReturn = returnBtn.contains(relativePoint)
+        var containsContinue = false
+        if(continueBtn != nil){
+             containsContinue = continueBtn.contains(relativePoint)
+        }
         
-        if pauseBtnPressed && !containsPause {
+        if pauseBtnPressed && !containsPause && !containsContinue {
             //Cancel the last click
             pauseBtnPressed = false
             pauseBtn.texture = pauseBtnTexture
         }
-        else if returnBtnPressed && !containsReturn {
+        else if returnBtnPressed && !containsReturn && !containsContinue{
             //Cancel the last click
             returnBtnPressed = false
             returnBtn.texture = returnBtnTexture
+        }else if continueBtnPressed && !containsReturn && !containsPause {
+            //Cancel the last click
+            continueBtnPressed = false
+            continueBtn.texture = continueBtnTexture
         }
         else if containsPause {
             pauseBtn.texture = pauseBtnPressedTexture
@@ -77,6 +87,10 @@ class GameSceneHudNode: SKNode {
         else if containsReturn {
             returnBtn.texture = returnBtnPressedTexture
             returnBtnPressed = true
+        }
+        else if containsContinue {
+            continueBtn.texture = continueBtnPressedTexture
+            continueBtnPressed = true
         }
     }
     
@@ -95,6 +109,12 @@ class GameSceneHudNode: SKNode {
             } else {
                 returnBtn.texture = returnBtnTexture
             }
+        } else if  continueBtnPressed {
+            if continueBtn.contains(relativePoint) {
+                continueBtn.texture = continueBtnPressedTexture
+            } else {
+                continueBtn.texture = continueBtnTexture
+            }
         }
     }
     
@@ -104,19 +124,28 @@ class GameSceneHudNode: SKNode {
             pauseBtnAction!()
         } else if returnBtn.contains(relativePoint) && returnBtnAction != nil {
             returnBtnAction!()
+        } else if continueBtn.contains(relativePoint) && continueBtnAction != nil {
+            continueBtnAction!()
         }
         
         pauseBtn.texture = pauseBtnTexture
         returnBtn.texture = returnBtnTexture
+        continueBtn.texture = continueBtnTexture
     }
     
     func createContinueBtn(){
-        continueBtn = SKSpriteNode(texture: continueBtnTexture)
-        continueBtn.size =  CGSize(width:60,height:60)
-        continueBtn.position = CGPoint(x: 0, y: 0)
-        continueBtn.zPosition = 1000
+        if(continueBtn == nil){
+            continueBtn = SKSpriteNode(texture: continueBtnTexture)
+            continueBtn.size =  CGSize(width:60,height:60)
+            continueBtn.position = CGPoint(x: 0, y: 0)
+            continueBtn.zPosition = 1000
         
-        addChild(continueBtn)
+            addChild(continueBtn)
+        }
+    }
+    
+    func dissmissContinueBtn(){
+        continueBtn.removeFromParent()
     }
 
     
