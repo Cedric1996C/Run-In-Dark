@@ -14,12 +14,18 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
     // MARK: - Instance Variables
     
     let playerSpeed: CGFloat = 160.0
-    let zombieSpeed: CGFloat = 80.0
     
     var goal: SKSpriteNode?
     var player: SKSpriteNode?
     var light:SKLightNode?
-    var zombies: [SKSpriteNode] = []
+    
+    var zombies: [ZombieSprite] = []
+    private let zombiePosition: [CGPoint] = [
+        CGPoint(x:900,y:1800),
+        CGPoint(x:900,y:900),
+        CGPoint(x:950,y:200),
+        CGPoint(x:150,y:150)
+    ]
     
     var lastTouch: CGPoint? = nil
     
@@ -68,15 +74,23 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
         
         // Setup player
         player = self.childNode(withName: "player") as? SKSpriteNode
-        
-        // Setup zombies
-        for child in self.children {
+        /*
+         for child in self.children {
             if child.name == "zombie" {
-                if let child = child as? SKSpriteNode {
+                if let child = child as? ZombieSprite {
                     // Add zombie
                     zombies.append(child)
+                    print("add a zombie")
                 }
             }
+        }
+         */
+        // Setup zombies
+        for zombiePosition in zombiePosition {
+            let zombie = ZombieSprite.newInstance(point: zombiePosition)
+            zombies.append(zombie)
+            self.addChild(zombie)
+            print("add a zombie")
         }
         
         // Setup goal
@@ -97,7 +111,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
                  touchEvents(touches)
             }
         }
-//        touchEvents(touches)
+        
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -163,8 +177,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
         }
         
         // 3. react to the contact between the two nodes
-        if firstBody.categoryBitMask == player?.physicsBody?.categoryBitMask &&
-            secondBody.categoryBitMask == zombies[0].physicsBody?.categoryBitMask {
+        if firstBody.categoryBitMask == player?.physicsBody?.categoryBitMask && secondBody.categoryBitMask == zombies[0].physicsBody?.categoryBitMask {
             // Player & Zombie
             gameOver(false)
         } else if firstBody.categoryBitMask == player?.physicsBody?.categoryBitMask &&
