@@ -32,11 +32,11 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
         addChild(hud)
         
         hud.returnBtnAction = {
-            let transition = SKTransition.reveal(with: .left, duration: 0.75)
+            let transition = SKTransition.reveal(with: .left, duration: 0.5)
             let newSize = CGSize(width:self.screenSize.width,height:self.screenSize.height)
-            let initialScene = InitialScene(size:newSize)
-            initialScene.scaleMode = .aspectFit
-            self.view?.presentScene(initialScene, transition: transition)
+            let levelScene = LevelScene(size:newSize)
+            levelScene.scaleMode = .aspectFit
+            self.view?.presentScene(levelScene, transition: transition)
             self.hud.returnBtnAction = nil
         }
         
@@ -47,8 +47,9 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
         
         hud.continueBtnAction = {
             self.isPaused = false
-           self.hud.dissmissContinueBtn()
+            self.hud.dissmissContinueBtn()
         }
+        
 
     }
     
@@ -59,16 +60,16 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
         // Setup player
         player = self.childNode(withName: "player") as? SKSpriteNode
         
-        // Setup listener
-        self.listener = player
+//        // Setup listener
+//        self.listener = player
         
         // Setup zombies
         for child in self.children {
             if child.name == "zombie" {
                 if let child = child as? SKSpriteNode {
                     // Add SKAudioNode to zombie
-                    let audioNode: SKAudioNode = SKAudioNode(fileNamed: "fear_moan.wav")
-                    child.addChild(audioNode)
+//                    let audioNode: SKAudioNode = SKAudioNode(fileNamed: "fear_moan.wav")
+//                    child.addChild(audioNode)
                     zombies.append(child)
                 }
             }
@@ -174,11 +175,11 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
     
     fileprivate func gameOver(_ didWin: Bool) {
         print("- - - Game Ended - - -")
-        let menuScene = MenuScene(size: self.size)
-        menuScene.soundToPlay = didWin ? "fear_win.mp3" : "fear_lose.mp3"
+        let gameOverScene = GameOverScene(size: self.size)
+        gameOverScene.soundToPlay = didWin ? "fear_win.mp3" : "fear_lose.mp3"
         let transition = SKTransition.flipVertical(withDuration: 1.0)
-        menuScene.scaleMode = SKSceneScaleMode.aspectFill
-        self.scene!.view?.presentScene(menuScene, transition: transition)
+        gameOverScene.scaleMode = SKSceneScaleMode.aspectFill
+        self.scene!.view?.presentScene(gameOverScene, transition: transition)
     }
     
 }

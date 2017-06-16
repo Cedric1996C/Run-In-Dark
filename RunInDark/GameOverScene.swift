@@ -9,7 +9,7 @@
 import UIKit
 import SpriteKit
 
-class MenuScene: SKScene {
+class GameOverScene: SKScene {
     
     var soundToPlay: String?
     
@@ -25,7 +25,7 @@ class MenuScene: SKScene {
         
         // Play sound
         if let soundToPlay = soundToPlay {
-            self.run(SKAction.playSoundFileNamed(soundToPlay, waitForCompletion: false))
+//            self.run(SKAction.playSoundFileNamed(soundToPlay, waitForCompletion: false))
         }
         
         self.addChild(label)

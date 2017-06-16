@@ -142,30 +142,26 @@ class InitialScene: SKScene {
     }
     
     func handlestartBtnClick() {
-        let transition = SKTransition.reveal(with: .down, duration: 0.75)
-
+        let transition = SKTransition.reveal(with: .down, duration: 0.5)
         
-        /// transitate to level_1
-        if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
-            // Configure the view.
-            let skView = self.view!
-//            skView.showsFPS = true
-//            skView.showsNodeCount = true
-//            
-            /* Sprite Kit applies additional optimizations to improve rendering performance */
-            skView.ignoresSiblingOrder = true
-            
-            /* Set the scale mode to scale to fit the window */
-            scene.scaleMode = .aspectFill
-            skView.presentScene(scene, transition: transition)
-        }
+        /// transitate to levelScene
+        let scene = LevelScene(size: size)
+        // Configure the view.
+        let skView = self.view!
 
+        /* Sprite Kit applies additional optimizations to improve rendering performance */
+        skView.ignoresSiblingOrder = true
+        
+        /* Set the scale mode to scale to fit the window */
+        scene.scaleMode = .aspectFill
+        skView.presentScene(scene, transition: transition)
+        
     }
     
+    //open developer's GitHub by Safari
     func handledevelopBtnClick() {
         let urlString = "https://github.com/NJUcong"
         if let url = URL(string: urlString) {
-            //根据iOS系统版本，分别处理
             if #available(iOS 10, *) {
                 UIApplication.shared.open(url, options: [:],completionHandler: {
                                             (success) in
@@ -177,13 +173,14 @@ class InitialScene: SKScene {
     }
     
     func handleoptionBtnClick() {
-//        if SoundManager.sharedInstance.toggleMute() {
-//            //Is muted
-//            optionBtn.texture = optionBtnTextureOff
-//        } else {
-//            //Is not muted
-//            optionBtn.texture = optionBtnTexture
-//        }
+        if SoundManager.sharedInstance.toggleMute() {
+            //Is muted
+//            soundButton.texture = soundButtonTextureOff
+        } else {
+            //Is not muted
+//            soundButton.texture = soundButtonTexture
+        }
+    
     }
 
 }

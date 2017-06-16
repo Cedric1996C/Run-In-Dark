@@ -78,7 +78,6 @@ class GameSceneHudNode: SKNode {
         }else if continueBtnPressed && !containsReturn && !containsPause {
             //Cancel the last click
             continueBtnPressed = false
-            continueBtn.texture = continueBtnTexture
         }
         else if containsPause {
             pauseBtn.texture = pauseBtnPressedTexture
@@ -124,15 +123,17 @@ class GameSceneHudNode: SKNode {
             pauseBtnAction!()
         } else if returnBtn.contains(relativePoint) && returnBtnAction != nil {
             returnBtnAction!()
-        } else if continueBtn.contains(relativePoint) && continueBtnAction != nil {
-            continueBtnAction!()
+        } else if(continueBtn != nil){
+            if continueBtn.contains(relativePoint) && continueBtnAction != nil {
+                continueBtnAction!()
+            }
         }
         
         pauseBtn.texture = pauseBtnTexture
         returnBtn.texture = returnBtnTexture
-        continueBtn.texture = continueBtnTexture
     }
     
+    // show Continue Button
     func createContinueBtn(){
         if(continueBtn == nil){
             continueBtn = SKSpriteNode(texture: continueBtnTexture)
@@ -140,12 +141,15 @@ class GameSceneHudNode: SKNode {
             continueBtn.position = CGPoint(x: 0, y: 0)
             continueBtn.zPosition = 1000
         
-            addChild(continueBtn)
+            self.addChild(continueBtn)
         }
     }
     
+    // dismiss Continue Button
     func dissmissContinueBtn(){
+        continueBtn.texture = continueBtnTexture
         continueBtn.removeFromParent()
+        continueBtn = nil
     }
 
     

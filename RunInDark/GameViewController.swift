@@ -45,6 +45,9 @@ class GameViewController: UIViewController {
             //            view.showsFPS = true
             //            view.showsNodeCount = true
         }
+        
+        //start playing BGM
+        SoundManager.sharedInstance.StartPlaying(sceneName: "game")
 
     }
     
