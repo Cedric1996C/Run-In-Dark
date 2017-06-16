@@ -18,6 +18,8 @@ class SoundManager: NSObject, AVAudioPlayerDelegate{
     static private let menu = "fear_bg"
     static private let game = "offer_your_heart"
     
+    private var instantMusic:String?
+    
     private override init() {
         
         //This is private so you can only have one Sound Manager ever.
@@ -38,6 +40,8 @@ class SoundManager: NSObject, AVAudioPlayerDelegate{
                 print("Fail to set a correct music")
             }
             
+            instantMusic = sceneName
+            
             do {
                 audioPlayer = try AVAudioPlayer(contentsOf: soundURL!)
                 audioPlayer?.delegate = self
@@ -55,7 +59,7 @@ class SoundManager: NSObject, AVAudioPlayerDelegate{
     
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         //Just restart playing BGM
-        StartPlaying(sceneName: "menu")
+        StartPlaying(sceneName: instantMusic!)
     }
     
     func toggleMute() -> Bool {
@@ -68,7 +72,7 @@ class SoundManager: NSObject, AVAudioPlayerDelegate{
         if isMuted {
             audioPlayer?.stop()
         } else {
-//            StartPlaying(sceneName: "menu")
+//          StartPlaying(sceneName: "menu")
             audioPlayer?.play()
 
         }

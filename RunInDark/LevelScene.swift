@@ -39,7 +39,7 @@ class LevelScene: SKScene {
     
     override func sceneDidLoad() {
         super.sceneDidLoad()
-    
+        
         //Setup background
         background.position = CGPoint(x: size.width/2,y:size.height/2)
         background.zPosition = -1

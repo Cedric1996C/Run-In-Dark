@@ -25,7 +25,7 @@ class GameOverScene: SKScene {
         
         // Play sound
         if let soundToPlay = soundToPlay {
-//            self.run(SKAction.playSoundFileNamed(soundToPlay, waitForCompletion: false))
+            self.run(SKAction.playSoundFileNamed(soundToPlay, waitForCompletion: false))
         }
         
         self.addChild(label)

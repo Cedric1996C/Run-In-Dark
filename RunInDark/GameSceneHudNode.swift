@@ -26,11 +26,20 @@ class GameSceneHudNode: SKNode {
     private var continueBtn: SKSpriteNode!
     private let continueBtnTexture = SKTexture(imageNamed:"continue01")
     private let continueBtnPressedTexture = SKTexture(imageNamed: "continue02")
-
     
+    // add item torch
+    private(set) var torchBtnPressed = false
+    private(set) var torchIsUsed = false
+    private var torchBtn: SKSpriteNode!
+    private let torchBtnTexture = SKTexture(imageNamed:"torch01")
+    private let torchBtnPressedTexture = SKTexture(imageNamed: "torch02")
+    private let torchBtnIsUsedTexture = SKTexture(imageNamed: "torchUsed")
+    
+    // button click actions
     var pauseBtnAction: (() -> ())?
     var returnBtnAction: (() -> ())?
     var continueBtnAction: (() -> ())?
+    var torchBtnAction:(() -> ())?
     
     var selectedBtn: SKSpriteNode?
     
@@ -54,6 +63,13 @@ class GameSceneHudNode: SKNode {
         
         addChild(returnBtn)
         
+        torchBtn = SKSpriteNode(texture: torchBtnTexture)
+        torchBtn.size =  CGSize(width:50,height:50)
+        torchBtn.position = CGPoint(x: screenSize.height/2 - 45, y: -screenSize.width/2 + 60  )
+        torchBtn.zPosition = 1000
+        
+        addChild(torchBtn)
+
     }
     
     func touchBeganAtPoint(point: CGPoint) {
@@ -61,23 +77,46 @@ class GameSceneHudNode: SKNode {
         let relativePoint = CGPoint(x:-(point.y - screenSize.height/2), y:-(point.x - screenSize.width/2))
         let containsPause = pauseBtn.contains(relativePoint)
         let containsReturn = returnBtn.contains(relativePoint)
+        var containsTorch = false
         var containsContinue = false
+       
+        //judge if buttons work
         if(continueBtn != nil){
-             containsContinue = continueBtn.contains(relativePoint)
+            containsContinue = continueBtn.contains(relativePoint)
+        }
+        if(!torchIsUsed){
+            containsTorch = torchBtn.contains(relativePoint)
         }
         
-        if pauseBtnPressed && !containsPause && !containsContinue {
+        //judge position of touchpoint
+        if pauseBtnPressed
+            && !containsPause
+            && !containsContinue
+            && !containsTorch{
             //Cancel the last click
             pauseBtnPressed = false
             pauseBtn.texture = pauseBtnTexture
         }
-        else if returnBtnPressed && !containsReturn && !containsContinue{
+        else if returnBtnPressed
+            && !containsReturn
+            && !containsContinue
+            && !containsTorch{
             //Cancel the last click
             returnBtnPressed = false
             returnBtn.texture = returnBtnTexture
-        }else if continueBtnPressed && !containsReturn && !containsPause {
+        }else if continueBtnPressed
+            && !containsReturn
+            && !containsPause
+            && !containsTorch{
             //Cancel the last click
             continueBtnPressed = false
+        }
+        else if torchBtnPressed
+            && !containsReturn
+            && !containsPause
+            && !containsContinue{
+            //Cancel the last click
+            torchBtnPressed = false
         }
         else if containsPause {
             pauseBtn.texture = pauseBtnPressedTexture
@@ -91,6 +130,11 @@ class GameSceneHudNode: SKNode {
             continueBtn.texture = continueBtnPressedTexture
             continueBtnPressed = true
         }
+        else if containsTorch {
+            torchBtn.texture = torchBtnPressedTexture
+            torchBtnPressed = true
+        }
+        
     }
     
     func touchMovedToPoint(point: CGPoint) {
@@ -114,18 +158,33 @@ class GameSceneHudNode: SKNode {
             } else {
                 continueBtn.texture = continueBtnTexture
             }
+        } else if torchBtnPressed {
+            if torchBtn.contains(relativePoint) {
+                torchBtn.texture = torchBtnPressedTexture
+            } else {
+                torchBtn.texture = torchBtnTexture
+            }
         }
+        
     }
     
     func touchEndedAtPoint(point: CGPoint) {
         let relativePoint = CGPoint(x:-(point.y - screenSize.height/2), y:-(point.x - screenSize.width/2))
         if pauseBtn.contains(relativePoint) && pauseBtnAction != nil {
             pauseBtnAction!()
-        } else if returnBtn.contains(relativePoint) && returnBtnAction != nil {
+        }
+        else if returnBtn.contains(relativePoint) && returnBtnAction != nil {
             returnBtnAction!()
-        } else if(continueBtn != nil){
+        }
+        else if(continueBtn != nil){
             if continueBtn.contains(relativePoint) && continueBtnAction != nil {
                 continueBtnAction!()
+            }
+        }
+        else if(torchBtn != nil) {
+            if(torchBtn.contains(relativePoint) && torchBtn != nil){
+                torchIsUsed = true
+                torchBtnAction!()
             }
         }
         
@@ -151,6 +210,10 @@ class GameSceneHudNode: SKNode {
         continueBtn.removeFromParent()
         continueBtn = nil
     }
-
+    
+    //change torch state: add/decline
+    func changeTorchState(){
+        torchBtn.texture = torchIsUsed ? torchBtnIsUsedTexture:torchBtnTexture
+    }
     
 }

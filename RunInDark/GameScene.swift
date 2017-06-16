@@ -18,6 +18,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
     
     var goal: SKSpriteNode?
     var player: SKSpriteNode?
+    var light:SKLightNode?
     var zombies: [SKSpriteNode] = []
     
     var lastTouch: CGPoint? = nil
@@ -25,11 +26,14 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
     private let hud = GameSceneHudNode()
     private let screenSize = UIScreen.main.bounds
     
+    private var timer:Timer?
+    let lightEnd:CGFloat = 2.0
 
     override func sceneDidLoad() {
         camera?.scene?.anchorPoint = CGPoint(x:0.5,y:0.5)
         hud.setup(size: screenSize.size)
         addChild(hud)
+        SoundManager.sharedInstance.StartPlaying(sceneName: "game")
         
         hud.returnBtnAction = {
             let transition = SKTransition.reveal(with: .left, duration: 0.5)
@@ -37,6 +41,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
             let levelScene = LevelScene(size:newSize)
             levelScene.scaleMode = .aspectFit
             self.view?.presentScene(levelScene, transition: transition)
+            SoundManager.sharedInstance.StartPlaying(sceneName: "menu")
             self.hud.returnBtnAction = nil
         }
         
@@ -50,7 +55,11 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
             self.hud.dissmissContinueBtn()
         }
         
-
+        hud.torchBtnAction = {
+            self.lightenScene()
+            self.hud.changeTorchState()
+        }
+        
     }
     
     override func didMove(to view: SKView) {
@@ -60,16 +69,11 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
         // Setup player
         player = self.childNode(withName: "player") as? SKSpriteNode
         
-//        // Setup listener
-//        self.listener = player
-        
         // Setup zombies
         for child in self.children {
             if child.name == "zombie" {
                 if let child = child as? SKSpriteNode {
-                    // Add SKAudioNode to zombie
-//                    let audioNode: SKAudioNode = SKAudioNode(fileNamed: "fear_moan.wav")
-//                    child.addChild(audioNode)
+                    // Add zombie
                     zombies.append(child)
                 }
             }
@@ -179,7 +183,30 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
         gameOverScene.soundToPlay = didWin ? "fear_win.mp3" : "fear_lose.mp3"
         let transition = SKTransition.flipVertical(withDuration: 1.0)
         gameOverScene.scaleMode = SKSceneScaleMode.aspectFill
+        SoundManager.sharedInstance.audioPlayer?.stop()
         self.scene!.view?.presentScene(gameOverScene, transition: transition)
     }
     
+    // using torch: lighten Scene
+    func lightenScene(){
+        // Setup light
+        light = self.player?.childNode(withName: "light") as? SKLightNode
+        light?.falloff = 0.5
+        
+        Timer.scheduledTimer(timeInterval:3,target:self,selector:#selector(GameScene.lightStart),userInfo:nil,repeats:false)
+    }
+    
+    //light start
+    func lightStart(){
+        // Setup timer to control animation of lightening
+        timer = Timer.scheduledTimer(timeInterval:0.1,target:self,selector:#selector(GameScene.falloff),userInfo:nil,repeats:true)
+    }
+    
+    // light falloff
+    func falloff(){
+        light?.falloff += 0.1
+        if( (light?.falloff)! > lightEnd){
+            timer?.invalidate()
+        }
+    }
 }

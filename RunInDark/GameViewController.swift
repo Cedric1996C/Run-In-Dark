@@ -47,7 +47,7 @@ class GameViewController: UIViewController {
         }
         
         //start playing BGM
-        SoundManager.sharedInstance.StartPlaying(sceneName: "game")
+        SoundManager.sharedInstance.StartPlaying(sceneName: "menu")
 
     }
     
