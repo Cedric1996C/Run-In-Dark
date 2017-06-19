@@ -31,6 +31,8 @@
 		06791BED1EE45BE600F00FC8 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06791BEC1EE45BE600F00FC8 /* GameOverScene.swift */; };
 		06791BF41EE45E3100F00FC8 /* Room.sks in Resources */ = {isa = PBXBuildFile; fileRef = 06791BF21EE45E3100F00FC8 /* Room.sks */; };
 		06791BF51EE45E3100F00FC8 /* Wall.sks in Resources */ = {isa = PBXBuildFile; fileRef = 06791BF31EE45E3100F00FC8 /* Wall.sks */; };
+		069E15BA1EF7F79800A9C1FA /* WallSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069E15B91EF7F79800A9C1FA /* WallSprite.swift */; };
+		069E15BC1EF7F9C000A9C1FA /* RoomSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069E15BB1EF7F9C000A9C1FA /* RoomSprite.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +62,8 @@
 		06791BEC1EE45BE600F00FC8 /* GameOverScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		06791BF21EE45E3100F00FC8 /* Room.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Room.sks; sourceTree = "<group>"; };
 		06791BF31EE45E3100F00FC8 /* Wall.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Wall.sks; sourceTree = "<group>"; };
+		069E15B91EF7F79800A9C1FA /* WallSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WallSprite.swift; sourceTree = "<group>"; };
+		069E15BB1EF7F9C000A9C1FA /* RoomSprite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomSprite.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +82,8 @@
 			children = (
 				0638D9C11EEFC1A500D74F4C /* PlayerSprite.swift */,
 				0638D9C41EEFC38600D74F4C /* ZombieSprite.swift */,
+				069E15B91EF7F79800A9C1FA /* WallSprite.swift */,
+				069E15BB1EF7F9C000A9C1FA /* RoomSprite.swift */,
 			);
 			name = Sprites;
 			sourceTree = "<group>";
@@ -246,12 +252,14 @@
 			files = (
 				06791BDB1EE4162400F00FC8 /* GameScene.swift in Sources */,
 				06791BED1EE45BE600F00FC8 /* GameOverScene.swift in Sources */,
+				069E15BA1EF7F79800A9C1FA /* WallSprite.swift in Sources */,
 				0638D9C51EEFC38600D74F4C /* ZombieSprite.swift in Sources */,
 				06791BDD1EE4162400F00FC8 /* GameViewController.swift in Sources */,
 				0638D9E11EF3BFA400D74F4C /* constants.swift in Sources */,
 				0638D9C91EEFDD3700D74F4C /* InitialScene.swift in Sources */,
 				06791BD51EE4162400F00FC8 /* AppDelegate.swift in Sources */,
 				0638D9CD1EF0CE5800D74F4C /* GameSceneHudNode.swift in Sources */,
+				069E15BC1EF7F9C000A9C1FA /* RoomSprite.swift in Sources */,
 				0638D9C21EEFC1A500D74F4C /* PlayerSprite.swift in Sources */,
 				0638D9D01EF20F3C00D74F4C /* LevelScene.swift in Sources */,
 				0638D9DF1EF3BEDE00D74F4C /* SoundManager.swift in Sources */,

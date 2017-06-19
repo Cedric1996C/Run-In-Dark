@@ -20,6 +20,7 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
     var light:SKLightNode?
     
     var zombies: [ZombieSprite] = []
+    var rooms: [SKNode] = []
     private let zombiePosition: [CGPoint] = [
         CGPoint(x:900,y:1800),
         CGPoint(x:900,y:900),
@@ -66,6 +67,8 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
             self.hud.changeTorchState()
         }
         
+        print(self.children.count)
+        
     }
     
     override func didMove(to view: SKView) {
@@ -74,17 +77,17 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
         
         // Setup player
         player = self.childNode(withName: "player") as? SKSpriteNode
-        /*
-         for child in self.children {
-            if child.name == "zombie" {
-                if let child = child as? ZombieSprite {
-                    // Add zombie
-                    zombies.append(child)
-                    print("add a zombie")
+        
+        for child in self.children {
+            if child.name == "Room" {
+               for  item in child.children {
+//                    item.physicsBody?.categoryBitMask = 3
+//                    item.physicsBody?.contactTestBitMask = 2
+                    rooms.append(item)
                 }
             }
         }
-         */
+ 
         // Setup zombies
         for zombiePosition in zombiePosition {
             let zombie = ZombieSprite.newInstance(point: zombiePosition)
@@ -184,6 +187,9 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
             secondBody.categoryBitMask == goal?.physicsBody?.categoryBitMask {
             // Player & Goal
             gameOver(true)
+        } else if firstBody.categoryBitMask == zombies[0].physicsBody?.categoryBitMask  && secondBody.categoryBitMask == rooms[0].physicsBody?.categoryBitMask  {
+            // Wall & Zombie
+            zombies[0].touchWall()
         }
     }
     

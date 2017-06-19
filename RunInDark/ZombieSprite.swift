@@ -10,7 +10,13 @@ import SpriteKit
 
 class ZombieSprite: SKSpriteNode{
     
-    private var patrolInterval:CGFloat = 0.0
+    private var patrolInterval:CGFloat = 3.0
+    private let patrolEnd:CGFloat = 2.0
+    
+    private var angle:CGFloat!
+    private var rotateAction:SKAction!
+    
+    private var timer:Timer?
     
     public static func newInstance(point:CGPoint) -> ZombieSprite {
         let zombieSprite = ZombieSprite(imageNamed:"zombie")
@@ -29,6 +35,61 @@ class ZombieSprite: SKSpriteNode{
         return zombieSprite
     }
     
+    public func update(target:CGPoint){
+        let current = self.position
+        
+        //checkout the distance between player and zombie
+        let deltaX = current.x - target.x
+        let deltaY = current.y - target.y
+        let distance = sqrt(deltaX*deltaX + deltaY*deltaY)
+        
+        if(distance < 300) {
+            angle = atan2(deltaY, deltaX) + CGFloat(M_PI)
+            rotateAction = SKAction.rotate(toAngle: angle + CGFloat(M_PI*0.5), duration: 0.0)
+            self.run(rotateAction)
+        }
+        else if patrolInterval > patrolEnd{
+            patrolInterval = 0.0
+            angle = CGFloat(arc4random_uniform(360))
+            rotateAction = SKAction.rotate(toAngle: angle + CGFloat(M_PI*0.5), duration: 0.0)
+            
+            // Setup timer to control the timeInterval of patroling
+            timer = Timer.scheduledTimer(timeInterval:0.1,target:self,selector:#selector(patrol),userInfo:nil,repeats:true)
+            
+            self.run(rotateAction)
+        }
+        
+        if(distance < 160){
+            findThePlayer()
+        }
+        
+        let velocotyX = self.speed * cos(angle)
+        let velocityY = self.speed * sin(angle)
+        
+        let zombieVelocity = CGVector(dx: velocotyX, dy: velocityY)
+        self.physicsBody!.velocity = zombieVelocity;
+    }
+    
+    //if zombie find player, fear_moan will br played
+    private func findThePlayer() {
+        run(SKAction.playSoundFileNamed("fear_moan.wav", waitForCompletion: true),withKey: "action_sound_effect")
+    }
+    
+    //if zombie touch wall, it will change a direction
+    func touchWall() {
+        angle = CGFloat(arc4random_uniform(90)) + 135.0
+        rotateAction = SKAction.rotate(toAngle: angle + CGFloat(M_PI*0.5), duration: 0.0)
+        self.run(rotateAction)
+    }
+
+    //if distance from zombie to player is more than 300,zombie will be patroling
+    func patrol () {
+        patrolInterval += 0.1
+        if( patrolInterval > patrolEnd){
+            timer?.invalidate()
+        }
+    }
+    
 }
 
 extension GameScene {
@@ -38,52 +99,8 @@ extension GameScene {
         let target = player!.position
         
         for  zombie in zombies {
-            let current = zombie.position
-            
-            //checkout the distance between player and zombie
-            let deltaX = current.x - target.x
-            let deltaY = current.y - target.y
-            let distance = sqrt(deltaX*deltaX + deltaY*deltaY)
-            
-            if(distance < 300) {
-                let angle = atan2(deltaY, deltaX) + CGFloat(M_PI)
-                let rotateAction = SKAction.rotate(toAngle: angle + CGFloat(M_PI*0.5), duration: 0.0)
-                zombie.run(rotateAction)
-                
-                if(distance < 160){
-                    findThePlayer()
-                }
-                
-                let velocotyX = zombie.speed * cos(angle)
-                let velocityY = zombie.speed * sin(angle)
-                
-                let zombieVelocity = CGVector(dx: velocotyX, dy: velocityY)
-                zombie.physicsBody!.velocity = zombieVelocity;
-            }
-            else {
-                zombie.patrol()
-            }
+            zombie.update(target: target)
         }
-    }
-    
-    //if zombie find player, fear_moan will br played
-    func findThePlayer() {
-        run(SKAction.playSoundFileNamed("fear_moan.wav", waitForCompletion: true),withKey: "action_sound_effect")
-    }
-    
-    //if zombie touch wall, it will change a direction
-    func touchWall() {
-        
-    }
-}
-
-extension SKSpriteNode {
-    
-    //    private var patrolInterval:CGFloat = 0.0
-    
-    //if distance from zombie to player is more than 300,zombie will be patroling
-    func patrol () {
-        
     }
     
 }
