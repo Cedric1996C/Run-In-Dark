@@ -20,12 +20,32 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
     var light:SKLightNode?
     
     var zombies: [ZombieSprite] = []
-    var rooms: [SKNode] = []
+
+    //Sprites postions in Scene
     private let zombiePosition: [CGPoint] = [
         CGPoint(x:900,y:1800),
         CGPoint(x:900,y:900),
         CGPoint(x:950,y:200),
         CGPoint(x:150,y:150)
+    ]
+    
+    private let wallPosition: [CGPoint] = [
+        CGPoint(x:550,y:950),
+        CGPoint(x:855,y:675),
+        CGPoint(x:855,y:375),
+        CGPoint(x:375,y:225)
+    ]
+    private let wallRotation: [CGFloat] = [
+       CGFloat(M_PI*0.5),
+       CGFloat(M_PI*0.5),
+       CGFloat(M_PI*0.5),
+       0
+    ]
+    
+    private let roomPosition: [CGPoint] = [
+        CGPoint(x:0,y:1250),
+        CGPoint(x:680,y:1250),
+        CGPoint(x:0,y:650)
     ]
     
     var lastTouch: CGPoint? = nil
@@ -67,8 +87,6 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
             self.hud.changeTorchState()
         }
         
-        print(self.children.count)
-        
     }
     
     override func didMove(to view: SKView) {
@@ -77,23 +95,26 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
         
         // Setup player
         player = self.childNode(withName: "player") as? SKSpriteNode
-        
-        for child in self.children {
-            if child.name == "Room" {
-               for  item in child.children {
-//                    item.physicsBody?.categoryBitMask = 3
-//                    item.physicsBody?.contactTestBitMask = 2
-                    rooms.append(item)
-                }
-            }
-        }
  
         // Setup zombies
         for zombiePosition in zombiePosition {
             let zombie = ZombieSprite.newInstance(point: zombiePosition)
             zombies.append(zombie)
             self.addChild(zombie)
-            print("add a zombie")
+        }
+        
+        //Setup walls
+        for i in 0..<wallPosition.count {
+            let wall = WallSprite.newInstance(point: wallPosition[i],rotation:wallRotation[i])
+            self.addChild(wall)
+        }
+        
+        //Setup rooms
+        for i in 0..<roomPosition.count {
+            let room = RoomSprite.newInstance(point: roomPosition[i])
+//            print(room.position)
+            room.zPosition = 0
+            self.addChild(room)
         }
         
         // Setup goal
@@ -187,10 +208,18 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
             secondBody.categoryBitMask == goal?.physicsBody?.categoryBitMask {
             // Player & Goal
             gameOver(true)
-        } else if firstBody.categoryBitMask == zombies[0].physicsBody?.categoryBitMask  && secondBody.categoryBitMask == rooms[0].physicsBody?.categoryBitMask  {
-            // Wall & Zombie
-            zombies[0].touchWall()
         }
+        else if firstBody.categoryBitMask == zombies[0].physicsBody?.categoryBitMask  && secondBody.categoryBitMask == 3  {
+            // Wall & Zombie
+            for zombie in zombies {
+                if firstBody === zombie.physicsBody! {
+                    zombie.touchWall()
+                }
+            }
+//            let zombie:ZombieSprite = firstBody.node as! ZombieSprite
+//            zombie.touchWall()
+        }
+        
     }
     
     
@@ -200,6 +229,10 @@ class GameScene: SKScene,SKPhysicsContactDelegate{
         print("- - - Game Ended - - -")
         let gameOverScene = GameOverScene(size: self.size)
         gameOverScene.soundToPlay = didWin ? "fear_win.mp3" : "fear_lose.mp3"
+        if(didWin){
+            let defaults = UserDefaults.standard
+            defaults.set(true, forKey: "LEVEL2ISUNLOCKED")
+        }
         let transition = SKTransition.flipVertical(withDuration: 1.0)
         gameOverScene.scaleMode = SKSceneScaleMode.aspectFill
         SoundManager.sharedInstance.audioPlayer?.stop()

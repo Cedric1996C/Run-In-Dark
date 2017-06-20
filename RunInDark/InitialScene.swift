@@ -24,23 +24,29 @@ class InitialScene: SKScene {
     var startBtn : SKSpriteNode! = nil
     var developerBtn: SKSpriteNode! = nil
     
+    private let background = SKSpriteNode(imageNamed:"bg")
+    
     var selectedBtn : SKSpriteNode?
     
     override func sceneDidLoad() {
-        self.backgroundColor = SKColor(red: 0, green:0, blue:0, alpha: 1)
-//        self.backgroundColor = SKColor(red:160,green:160,blue:160,alpha:1)
-//        print(size.width)
-//        print(size.height)
+//        self.backgroundColor = SKColor(red: 0, green:0, blue:0, alpha: 1)
+
+        //Setup background
+        background.position = CGPoint(x: size.width/2,y:size.height/2)
+        background.zPosition = -1
+        addChild(background)
+
+        
         //Setup start button
         startBtn = SKSpriteNode(texture: startBtnTexture)
         startBtn.size = CGSize(width:40,height:40)
-        startBtn.position = CGPoint(x: size.width / 2-50, y: size.height / 2 - 90)
+        startBtn.position = CGPoint(x: size.width / 2-100, y: size.height / 2 - 90)
         addChild(startBtn)
         
         //Setup options button
         optionBtn = SKSpriteNode(texture: optionBtnTexture)
         optionBtn.size = CGSize(width:40,height:40)
-        optionBtn.position = CGPoint(x: size.width / 2+50, y: size.height / 2 - 90)
+        optionBtn.position = CGPoint(x: size.width / 2+100, y: size.height / 2 - 90)
         addChild(optionBtn)
 
         //Setup developer info button
@@ -49,11 +55,11 @@ class InitialScene: SKScene {
         developerBtn.position = CGPoint(x: size.width - 50 ,y: 50)
         addChild(developerBtn)
         
-        //Setup logo
-        logoSprite = SKSpriteNode(texture: titleTexture)
-        logoSprite.size = CGSize(width:450,height:100)
-        logoSprite.position = CGPoint(x: size.width / 2, y: size.height / 2 + 100)
-        addChild(logoSprite)
+//        //Setup logo
+//        logoSprite = SKSpriteNode(texture: titleTexture)
+//        logoSprite.size = CGSize(width:450,height:100)
+//        logoSprite.position = CGPoint(x: size.width / 2, y: size.height / 2 + 100)
+//        addChild(logoSprite)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

@@ -11,20 +11,27 @@ import SpriteKit
 
 class WallSprite: SKSpriteNode {
 
-    public static func newInstance(point:CGPoint) -> WallSprite {
-        let wallSprite = WallSprite(imageNamed:"wall")
-        let size = CGSize(width:50,height:400)
-        let wallTexture = SKTexture(imageNamed: "wall")
-        wallSprite.physicsBody = SKPhysicsBody(texture:wallTexture,size:size)
-        wallSprite.position = CGPoint(x:25,y:200)
+    public static func newInstance(point:CGPoint,rotation:CGFloat) -> WallSprite {
+        let wallSprite = WallSprite(imageNamed:"wall_50x350")
+        let size = CGSize(width:50,height:350)
+        let wallTexture = SKTexture(imageNamed: "wall_50x350")
+        
+        wallSprite.anchorPoint = CGPoint(x:0.5,y:0.5)
+        wallSprite.position = point
+        wallSprite.zRotation = rotation
+        
         wallSprite.lightingBitMask = 1
         wallSprite.shadowCastBitMask = 1
         wallSprite.shadowedBitMask = 1
+       
+        wallSprite.physicsBody = SKPhysicsBody(texture:wallTexture,size:size)
         wallSprite.physicsBody?.categoryBitMask = 3
         wallSprite.physicsBody?.contactTestBitMask = 2
         wallSprite.physicsBody?.isDynamic = false
         wallSprite.physicsBody?.allowsRotation = false
         wallSprite.physicsBody?.affectedByGravity = false
+        wallSprite.physicsBody?.pinned = true
+        
         return wallSprite
     }
 

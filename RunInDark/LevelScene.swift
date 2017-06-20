@@ -27,8 +27,8 @@ class LevelScene: SKScene {
   
     var selectedBtn : SKSpriteNode?
     
-    var level2IsLocked = true
-    var level3IsLocked = true
+    var level2IsUnlocked = true
+    var level3IsUnlocked = false
     
     private let background = SKSpriteNode(imageNamed:"level_background")
     
@@ -51,7 +51,10 @@ class LevelScene: SKScene {
         level1.position = CGPoint(x: size.width / 2 - 200, y: size.height / 2 - 20)
         addChild(level1)
         
-        if(level2IsLocked){
+        let defaults = UserDefaults.standard
+        level2IsUnlocked = defaults.bool(forKey: "LEVEL2ISUNLOCKED")
+        
+        if(!level2IsUnlocked){
             level2 = SKSpriteNode(texture: level2LockedTexture)
         } else {
             level2 = SKSpriteNode(texture:level2Texture)
@@ -60,7 +63,7 @@ class LevelScene: SKScene {
         level2.position = CGPoint(x:size.width/2,y: size.height/2 - 20)
         addChild(level2)
 
-        if(level3IsLocked){
+        if(!level3IsUnlocked){
             level3 = SKSpriteNode(texture: level3LockedTexture)
         } else {
             level3 = SKSpriteNode(texture:level3Texture)
@@ -88,7 +91,7 @@ class LevelScene: SKScene {
             if level1.contains(touch.location(in: self)) {
                 selectedBtn = level1
                 handlelevel1Hover(isHovering: true)
-            } else if level2.contains(touch.location(in: self)) && !level2IsLocked {
+            } else if level2.contains(touch.location(in: self)) && level2IsUnlocked {
                 selectedBtn = level2
                 handlelevel2Hover(isHovering: true)
             } else if returnBtn.contains(touch.location(in: self)) {

@@ -17,6 +17,9 @@ class ZombieSprite: SKSpriteNode{
     private var rotateAction:SKAction!
     
     private var timer:Timer?
+    private var timer2:Timer?
+    private var findInterval:CGFloat = 3.0
+    private let findEnd:CGFloat = 2.0
     
     public static func newInstance(point:CGPoint) -> ZombieSprite {
         let zombieSprite = ZombieSprite(imageNamed:"zombie")
@@ -49,6 +52,7 @@ class ZombieSprite: SKSpriteNode{
             self.run(rotateAction)
         }
         else if patrolInterval > patrolEnd{
+//            print("patrol")
             patrolInterval = 0.0
             angle = CGFloat(arc4random_uniform(360))
             rotateAction = SKAction.rotate(toAngle: angle + CGFloat(M_PI*0.5), duration: 0.0)
@@ -59,7 +63,7 @@ class ZombieSprite: SKSpriteNode{
             self.run(rotateAction)
         }
         
-        if(distance < 160){
+        if(distance < 160 && findInterval>findEnd){
             findThePlayer()
         }
         
@@ -73,13 +77,16 @@ class ZombieSprite: SKSpriteNode{
     //if zombie find player, fear_moan will br played
     private func findThePlayer() {
         run(SKAction.playSoundFileNamed("fear_moan.wav", waitForCompletion: true),withKey: "action_sound_effect")
+        findInterval = 0
+        timer2 = Timer.scheduledTimer(timeInterval:1,target:self,selector:#selector(findPlaying),userInfo:nil,repeats:true)
     }
     
     //if zombie touch wall, it will change a direction
     func touchWall() {
-        angle = CGFloat(arc4random_uniform(90)) + 135.0
+        angle = CGFloat(arc4random_uniform(180))/180.0 * CGFloat(M_PI)
         rotateAction = SKAction.rotate(toAngle: angle + CGFloat(M_PI*0.5), duration: 0.0)
         self.run(rotateAction)
+        patrolInterval -= 1.0
     }
 
     //if distance from zombie to player is more than 300,zombie will be patroling
@@ -87,6 +94,13 @@ class ZombieSprite: SKSpriteNode{
         patrolInterval += 0.1
         if( patrolInterval > patrolEnd){
             timer?.invalidate()
+        }
+    }
+    
+    func findPlaying() {
+        findInterval += 1.0
+        if( findInterval > findEnd ){
+            timer2?.invalidate()
         }
     }
     

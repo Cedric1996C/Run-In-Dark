@@ -9,3 +9,4 @@
 import Foundation
 
 let MuteKey = "RUNINDARK_MUTED"
+let level2IsUnlocked = "LEVEL2ISUNLOCKED"
