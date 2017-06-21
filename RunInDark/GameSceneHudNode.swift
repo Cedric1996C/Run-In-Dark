@@ -181,12 +181,13 @@ class GameSceneHudNode: SKNode {
                 continueBtnAction!()
             }
         }
-        else if(torchBtn != nil) {
+        else if(!torchIsUsed){
             if(torchBtn.contains(relativePoint) && torchBtn != nil){
                 torchIsUsed = true
                 torchBtnAction!()
             }
         }
+        
         
         pauseBtn.texture = pauseBtnTexture
         returnBtn.texture = returnBtnTexture
